@@ -8,7 +8,6 @@ public class Interpriter {
         String[] splitEquation = splitEquation(equation);
         Stack<Double> nums = new Stack<Double>();
         Stack<String> ops = new Stack<String>();
-
         
         // main claculation loop
         for (int i = 0; i < splitEquation.length; i++) {
@@ -28,7 +27,7 @@ public class Interpriter {
                 nums.push(value);
             } else if (currentString == "(") { // if its a bracket then add to stack so it can be calculate below
                 ops.push(currentString);
-            } else if (currentString == ")") { // perporms a calclation on all parts of the values in brackets
+            } else if (currentString == ")") { // performs a calclation on all parts of the values in brackets
                 while (!ops.isEmpty() && isOperator(ops.safePop())) {
                     String calculate = ops.pop();
                     doACalculation(calculate, ops, nums);
@@ -36,7 +35,7 @@ public class Interpriter {
                 if (!ops.isEmpty() && ops.safePop() == "(") {
                     ops.pop();
                 } else {
-                    System.out.println("Error: missing brackets in equation");
+                    System.out.println("Error: missing bracket in equation");
                 }
             }
         }
@@ -65,26 +64,34 @@ public class Interpriter {
         //remove white spaces from equation
         eq = eq.replaceAll("\\s+","");
 
+        System.out.println("interpreted as:" + eq);
+
         //finds where chars in the string change from operators to values and adds them to spliEq once they are found
         int trackerPoint = 0;
         for (int i = 0; i < eq.length(); i++) {
-            if (isOperator(eq.charAt(i)) || eq.charAt(i) == '(' || eq.charAt(i) == ')') {
+            if (isOperator(eq.charAt(i)) || !isOperator(eq.charAt(i)) && isOperator(eq.charAt(trackerPoint))) {
                 String val = eq.substring(trackerPoint, i);
                 trackerPoint = i;
                 splitEq.add(val);
             }
+        }
+        if (trackerPoint != eq.length()-1) {
+            String val = eq.substring(trackerPoint, eq.length());
+            splitEq.add(val);
         }
 
         //convert from arraylist to string array
         String[] splitString = new String[splitEq.size()];
         splitEq.toArray(splitString);
 
+        //System.out.println(splitString[0] + " " + splitString[1] + " " + splitString[2]);
+
         return splitString;
 
     }
 
     private static boolean isOperator(String x) {
-        if (x == "+" || x == "-" || x == "*" || x == "/" || x == "^") {
+        if (x.equals("+") || x.equals("-") || x.equals("*") || x.equals("/") || x.equals("^")) {
             return true;
         } else {
             return false;
@@ -100,11 +107,11 @@ public class Interpriter {
     }
 
     private static int getOperatorPowerLevel(String x) {
-        if (x == "+" || x == "-") {
+        if (x.equals("+") || x.equals("-")) {
             return 1;
-        } else if (x == "*" || x == "/") {
+        } else if (x.equals("*") || x.equals("/")) {
             return 2;
-        } else if (x == "^") {
+        } else if (x.equals("^")) {
             return 3;
         }
         return 0;
@@ -140,6 +147,8 @@ public class Interpriter {
             case "^":
                 output = Math.pow(val1, val2);
         }
+
+        //System.out.println("Val1: " + val1 + ", Val2: " + val2 + ", Output: " + output);
 
         nums.push(output);
     }

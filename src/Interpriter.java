@@ -1,13 +1,15 @@
 import java.util.ArrayList;
 
-public class Interpriter {
+public class Interpriter {   
 
+    public Interpriter() {
+    }
 
     public static Double calculate(String equation) {
         double answer = 0;
         String[] splitEquation = splitEquation(equation);
         Stack<Double> nums = new Stack<Double>();
-        Stack<String> ops = new Stack<String>();
+        Stack<String> ops = new Stack<String>(); 
         
         // main claculation loop
         for (int i = 0; i < splitEquation.length; i++) {
@@ -41,9 +43,10 @@ public class Interpriter {
         }
 
         // clean Stacks before getting answer
-        while (!ops.isEmpty()) {
+        while (!ops.isEmpty() && isOperator(ops.safePop())) {
             String calculate = ops.pop();
             doACalculation(calculate, ops, nums);
+            System.out.println(calculate);
         }
 
         // returning result left in value stack

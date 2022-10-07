@@ -16,7 +16,7 @@ public class Stack<T> {
 
     public T pop() {
         T val = topOfStack.getVar();
-        topOfStack.nextVar = topOfStack;
+        topOfStack = topOfStack.nextVar;
         return val;
     }
 

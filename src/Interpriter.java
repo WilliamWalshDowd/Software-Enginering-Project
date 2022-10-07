@@ -5,7 +5,14 @@ public class Interpriter {
     public Interpriter() {
     }
 
+    /**
+     * Calculates a given equation.
+     * 
+     * @param equation String representing an equation.
+     * @return result calculated from the equation.
+     */
     public static Double calculate(String equation) {
+    	
         double answer = 0;
         String[] splitEquation = splitEquation(equation);
         Stack<Double> nums = new Stack<Double>();
@@ -60,7 +67,12 @@ public class Interpriter {
         return answer;
     }
 
-    //used for converting the input equation into its values and operators in seperate parts for calculation
+    /**
+     * used for converting the input equation into its values and operators in separate parts for calculation
+     * 
+     * @param eq String representing an equation.
+     * @return equation split into separate parts represented as an array.
+     */
     private static String[] splitEquation(String eq) {
         ArrayList<String> splitEq = new ArrayList<String>();
 
@@ -93,6 +105,12 @@ public class Interpriter {
 
     }
 
+    /**
+     * Checks if the given string is an operator.
+     * 
+     * @param x String to be checked if an operator.
+     * @return True if x is an operator. False, otherwise.
+     */
     private static boolean isOperator(String x) {
         if (x.equals("+") || x.equals("-") || x.equals("*") || x.equals("/") || x.equals("^")) {
             return true;
@@ -101,6 +119,12 @@ public class Interpriter {
         }
     }
 
+    /**
+     * Checks if the given character is an operator.
+     * 
+     * @param x character to be checked if an operator.
+     * @return True if x is an operator. False, otherwise.
+     */
     private static boolean isOperator(char x) {
         if (x == '+' || x == '-' || x == '*' || x == '/' || x == '^') {
             return true;
@@ -108,7 +132,77 @@ public class Interpriter {
             return false;
         }
     }
+    
+    /**
+     * Takes an equation and determines if it's a valid equation.
+     * 
+     * @param equation String representing the equation.
+     * @return True if the equation is valid. False, otherwise.
+     */
+    public static boolean isValidEquation(String equation)
+    {
+    	int numberOfOpenBrackets = 0;
+    	int numberOfCloseBrackets = 0;
+    	
+    	// Accounts for equations such as 
+    	//	*1+2+3
+    	//	1+2+3*
+    	//	)1+2+3
+    	//	1+2+3(
+    	if (isOperator(equation.charAt(0)) || isOperator(equation.charAt(equation.length() - 1))
+    			|| equation.charAt(0) == ')' || equation.charAt(equation.length() - 1) == '(')
+		{
+			return false;
+		}
+    	
+    	for (int currentChar = 0; currentChar < equation.length(); currentChar++)
+    	{
+    		if (equation.charAt(currentChar) == '(')
+    		{
+    			// Accounts for equations where an operator is after an open bracket such as:
+    			//	1+(*2+3)
+    			if (isOperator(equation.charAt(currentChar + 1)))
+    			{
+    				return false;
+    			}
+    			numberOfOpenBrackets++;
+    		}
+    		else if (equation.charAt(currentChar) == ')')
+    		{   
+    			// Accounts for equations where a close brackets is after an operator such as:
+    			//	1+(2+3*)
+    			if (isOperator(equation.charAt(currentChar - 1)))
+    			{
+    				return false;
+    			}
+    			numberOfCloseBrackets++;
+    		}
+    		// Accounts for equations that contain non-operator and non-digit characters.
+    		else if (!isOperator(equation.charAt(currentChar)) && !Character.isDigit(equation.charAt(currentChar)))
+    		{
+    			return false;
+    		}
+    	}
+    	
+    	// Accounts for unpaired brackets such as:
+    	//	1+(2+3
+    	//	1+2+3)
+    	if (numberOfOpenBrackets != numberOfCloseBrackets)
+		{
+			return false;
+		}
+    	 
+    	return true;
+    }
 
+    /**
+     * Resolves precedence levels for operators, 
+     * i.e. Resolution of operators are as follows: 
+     * 	exponent, multiplication or division, then addition or subtraction.
+     * 
+     * @param x String representing an operator.
+     * @return the precedence level of the given operator.
+     */
     private static int getOperatorPowerLevel(String x) {
         if (x.equals("+") || x.equals("-")) {
             return 1;
@@ -120,6 +214,13 @@ public class Interpriter {
         return 0;
     }
 
+    /**
+     * Resolves a calculator given an operator and the numbers involved.
+     * 
+     * @param operator
+     * @param ops
+     * @param nums
+     */
     private static void doACalculation(String operator, Stack<String> ops, Stack<Double> nums) {
         double val1, val2;
 

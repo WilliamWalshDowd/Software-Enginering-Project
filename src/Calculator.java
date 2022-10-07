@@ -4,8 +4,10 @@ public class Calculator
 {
 	// Set scanner to a universal variable so it can be used by all functions.
 	private static Scanner input;
+	
+	
 	/**
-	 * Main.
+	 * This program takes in an equation from the user and calculates the result.
 	 */
 	public static void main(String[] args) 
 	{
@@ -17,8 +19,15 @@ public class Calculator
 		{
 			equation = askInput();
 			
-			//Call function here to resolve equation.
-			System.out.println("Answer: " + Interpriter.calculate(equation));
+			if (equation != null)
+			{
+				if (Interpriter.isValidEquation(equation))
+				{
+					//Call function here to resolve equation.
+					System.out.println("Answer: " + Interpriter.calculate(equation));
+				}
+				else System.out.println("Please input a valid equation");
+			}
 		}
 		
 		// Closes scanner input.
@@ -26,8 +35,9 @@ public class Calculator
 	}
 	
 	/**
+	 * Asks equation input from user to be calculated.
 	 * 
-	 * @return character array to be used to resolve calculations.
+	 * @return string to be used to resolve calculations.
 	 */
 	public static String askInput()
 	{
@@ -38,7 +48,7 @@ public class Calculator
 		{
 			// Creates scanner for user input.
 			input = new Scanner(System.in);
-			System.out.println("Please enter an equation for the calculator. You may use addition(+), subtraction(-), multiplication(*) and Exponentials(^) or type 'exit' to leave.");
+			System.out.println("Please enter an equation for the calculator. You may use addition(+), subtraction(-), multiplication(*), division(/) and exponentials(^) or type 'exit' to leave.");
 			if (input.hasNextLine())
 			{
 				String answer = input.nextLine();

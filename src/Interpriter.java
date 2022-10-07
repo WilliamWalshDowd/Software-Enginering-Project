@@ -11,11 +11,11 @@ public class Interpriter {
         Stack<Double> nums = new Stack<Double>();
         Stack<String> ops = new Stack<String>(); 
         
-        // main claculation loop
+        // main calculation loop
         for (int i = 0; i < splitEquation.length; i++) {
             String currentString = splitEquation[i];
-            if (isOperator(currentString)) { // is an operator so add to stack or do a calulation if possible
-                if (ops.isEmpty() || getOperatorPowerLevel(currentString) > getOperatorPowerLevel(ops.safePop())) { // adds current operator to stack if its Precendence is higher
+            if (isOperator(currentString)) { // is an operator so add to stack or do a calculation if possible
+                if (ops.isEmpty() || getOperatorPowerLevel(currentString) > getOperatorPowerLevel(ops.safePop())) { // adds current operator to stack if its Precedence is higher
                     ops.push(currentString);
                 } else {
                     while (!ops.isEmpty() && getOperatorPowerLevel(currentString) <= getOperatorPowerLevel(ops.safePop())) {
@@ -29,7 +29,7 @@ public class Interpriter {
                 nums.push(value);
             } else if (currentString == "(") { // if its a bracket then add to stack so it can be calculate below
                 ops.push(currentString);
-            } else if (currentString == ")") { // performs a calclation on all parts of the values in brackets
+            } else if (currentString == ")") { // performs a calculation on all parts of the values in brackets
                 while (!ops.isEmpty() && isOperator(ops.safePop())) {
                     String calculate = ops.pop();
                     doACalculation(calculate, ops, nums);
@@ -78,7 +78,7 @@ public class Interpriter {
                 splitEq.add(val);
             }
         }
-        if (trackerPoint != eq.length()-1) {
+        if (isOperator(splitEq.get(splitEq.size() - 1))) {
             String val = eq.substring(trackerPoint, eq.length());
             splitEq.add(val);
         }

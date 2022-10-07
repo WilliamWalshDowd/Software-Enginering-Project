@@ -10,7 +10,7 @@ public class Calculator
 	public static void main(String[] args) 
 	{
 		// Have dummy character array here so it enters the while loop.
-		char[] equation = new char['0'];
+		String equation = "";
 		
 		// As long as the user's input is not 'exit', then loop indefinitely.
 		while (equation != null)
@@ -18,6 +18,7 @@ public class Calculator
 			equation = askInput();
 			
 			//Call function here to resolve equation.
+			System.out.println("Answer: " + Interpriter.calculate(equation));
 		}
 		
 		// Closes scanner input.
@@ -28,16 +29,16 @@ public class Calculator
 	 * 
 	 * @return character array to be used to resolve calculations.
 	 */
-	public static char[] askInput()
+	public static String askInput()
 	{
 		boolean exit = false;
-		char[] userInput = null;
+		String userInput = null;
 		
 		while(!exit)
 		{
 			// Creates scanner for user input.
 			input = new Scanner(System.in);
-			System.out.println("Please enter an equation for the calculator. You may use addition(+), subtraction(-) and multiplication(*), or type 'exit' to leave.");
+			System.out.println("Please enter an equation for the calculator. You may use addition(+), subtraction(-), multiplication(*) and Exponentials(^) or type 'exit' to leave.");
 			if (input.hasNextLine())
 			{
 				String answer = input.nextLine();
@@ -49,7 +50,7 @@ public class Calculator
 				else
 				{
 					exit = true;
-					userInput = answer.toCharArray();
+					userInput = answer;
 				}
 			}
 		}

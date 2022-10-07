@@ -138,17 +138,17 @@ public class Interpriter {
         }
 
         double output = 0;
-        switch(operator) {
-            case "+":
-                output = val1 + val2;
-            case "-":
-                output = val1 - val2;
-            case "*":
-                output = val1 * val2;
-            case "/":
-                output = val1 / val2;
-            case "^":
-                output = Math.pow(val1, val2);
+
+        if (operator.equals("+")) {
+            output = val1 + val2;
+        } else if (operator.equals("-")) {
+            output = val1 - val2;
+        } else if (operator.equals("*")) {  
+            output = val1 * val2;
+        } else if (operator.equals("/")) {
+            output = val1 / val2;
+        } else if (operator.equals("^")) {
+            output = Math.pow(val1, val2);
         }
 
         //System.out.println("Val1: " + val1 + ", Val2: " + val2 + ", Output: " + output);

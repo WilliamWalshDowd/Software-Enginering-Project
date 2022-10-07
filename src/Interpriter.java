@@ -31,17 +31,17 @@ public class Interpriter {
                     }
                     ops.push(currentString);
                 }
-            } else if (currentString != "(" || currentString != ")") { // is a value so add to stack 
+            } else if (!currentString.equals("(") && !currentString.equals(")")) { // is a value so add to stack 
                 double value = Double.parseDouble(currentString);
                 nums.push(value);
-            } else if (currentString == "(") { // if its a bracket then add to stack so it can be calculate below
+            } else if (currentString.equals("(")) { // if its a bracket then add to stack so it can be calculate below
                 ops.push(currentString);
-            } else if (currentString == ")") { // performs a calculation on all parts of the values in brackets
+            } else if (currentString.equals(")")) { // performs a calculation on all parts of the values in brackets
                 while (!ops.isEmpty() && isOperator(ops.safePop())) {
                     String calculate = ops.pop();
                     doACalculation(calculate, ops, nums);
                 }
-                if (!ops.isEmpty() && ops.safePop() == "(") {
+                if (!ops.isEmpty() && ops.safePop().equals("(")) {
                     ops.pop();
                 } else {
                     System.out.println("Error: missing bracket in equation");
@@ -84,16 +84,36 @@ public class Interpriter {
         //finds where chars in the string change from operators to values and adds them to spliEq once they are found
         int trackerPoint = 0;
         for (int i = 0; i < eq.length(); i++) {
-            if (isOperator(eq.charAt(i)) || !isOperator(eq.charAt(i)) && isOperator(eq.charAt(trackerPoint))) {
+        	 if (eq.charAt(i) == '(')
+             {
+             	trackerPoint++;	// Skip to next char.
+             	splitEq.add(Character.toString(eq.charAt(i)));
+             }
+        	 else if (isOperator(eq.charAt(i)) || !isOperator(eq.charAt(i)) && isOperator(eq.charAt(trackerPoint))
+        			 || (eq.charAt(i) == ')' && i != eq.length() - 1)) {
                 String val = eq.substring(trackerPoint, i);
                 trackerPoint = i;
-                splitEq.add(val);
+                if (!val.isEmpty())
+                {
+                	splitEq.add(val);
+                }
+                splitEq.add(Character.toString(eq.charAt(i)));
+                trackerPoint++;
             }
         }
-        if (isOperator(splitEq.get(splitEq.size() - 1))) {
+        
+        if (eq.charAt(eq.length() - 1) == ')')
+        {
+        	String val = eq.substring(trackerPoint, eq.length() - 1);
+            splitEq.add(val);
+            splitEq.add(Character.toString(eq.charAt(eq.length() - 1)));
+        }
+        
+        else if (isOperator(splitEq.get(splitEq.size() - 1))) {
             String val = eq.substring(trackerPoint, eq.length());
             splitEq.add(val);
         }
+        
 
         //convert from arraylist to string array
         String[] splitString = new String[splitEq.size()];

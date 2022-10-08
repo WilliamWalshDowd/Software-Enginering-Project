@@ -61,6 +61,10 @@ public class Calculator
 				{
 					exit = true;
 					userInput = answer.replaceAll("\\s+","");
+					userInput = userInput.replace("+-","-");
+					userInput = userInput.replace("-+", "-");
+					userInput = userInput.replace("--", "+");
+					//userInput = userInput.replace("-(", "-1*(");
 				}
 			}
 		}

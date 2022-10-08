@@ -83,13 +83,26 @@ public class Interpriter {
 
         //finds where chars in the string change from operators to values and adds them to spliEq once they are found
         int trackerPoint = 0;
+        boolean isNegative = false;
+        
         for (int i = 0; i < eq.length(); i++) {
-        	 if (eq.charAt(i) == '(')
+        	 if (eq.charAt(i) == '-' 
+        			 && ((i != 0 && !Character.isDigit(eq.charAt(i - 1))) || i == 0)
+        			 && ((i != 0 && eq.charAt(i - 1) != ')') || i == 0))
+        	 {
+        		 i++;
+        		 isNegative = true;
+        	 }
+        	 // Adds '(' onto the list.
+        	 else if (eq.charAt(i) == '(')
              {
              	trackerPoint++;	// Skip to next char.
              	splitEq.add(Character.toString(eq.charAt(i)));
              }
-        	 else if (isOperator(eq.charAt(i)) || !isOperator(eq.charAt(i)) && isOperator(eq.charAt(trackerPoint))
+        	 // If an operator, adds the number previous and adds it to the list.
+        	 //  Then adds the operator to the list.
+        	 //	If 
+        	 else if (isOperator(eq.charAt(i)) || (!isNegative && !isOperator(eq.charAt(i)) && isOperator(eq.charAt(trackerPoint)))
         			 || (eq.charAt(i) == ')' && i != eq.length() - 1)) {
                 String val = eq.substring(trackerPoint, i);
                 trackerPoint = i;
@@ -99,13 +112,17 @@ public class Interpriter {
                 }
                 splitEq.add(Character.toString(eq.charAt(i)));
                 trackerPoint++;
+                isNegative = false;
             }
         }
         
         if (eq.charAt(eq.length() - 1) == ')')
         {
         	String val = eq.substring(trackerPoint, eq.length() - 1);
-            splitEq.add(val);
+        	if (!val.isEmpty())
+        	{
+        		splitEq.add(val);
+        	}
             splitEq.add(Character.toString(eq.charAt(eq.length() - 1)));
         }
         
@@ -170,7 +187,7 @@ public class Interpriter {
     	//	1+2+3*
     	//	)1+2+3
     	//	1+2+3(
-    	if (isOperator(equation.charAt(0)) || isOperator(equation.charAt(equation.length() - 1))
+    	if ((equation.charAt(0) != '-' && isOperator(equation.charAt(0))) || isOperator(equation.charAt(equation.length() - 1))
     			|| equation.charAt(0) == ')' || equation.charAt(equation.length() - 1) == '(')
 		{
 			return false;
@@ -221,7 +238,14 @@ public class Interpriter {
     		{
     			return false;
     		}
-    		else if (isOperator(equation.charAt(currentChar)))
+    		// Account for equations with two operators in a row.
+    		else if (currentChar < equation.length() - 1 && isOperator(equation.charAt(currentChar)) 
+    				&& equation.charAt(currentChar) == equation.charAt(currentChar + 1))
+    		{
+    			System.out.println("There are duplicate operators that cannot be resolved.");
+    			return false;
+    		}
+    		else if (isOperator(equation.charAt(currentChar)) && currentChar != 0)
     		{
     			operatorCount++;
     		}

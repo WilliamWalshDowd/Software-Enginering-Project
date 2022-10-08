@@ -26,7 +26,7 @@ public class Calculator
 					//Call function here to resolve equation.
 					System.out.println("Answer: " + Interpriter.calculate(equation));
 				}
-				else System.out.println("Please input a valid equation");
+				else System.out.println("Please input a valid equation.");
 			}
 		}
 		
@@ -60,7 +60,7 @@ public class Calculator
 				else
 				{
 					exit = true;
-					userInput = answer;
+					userInput = answer.replaceAll("\\s+","");
 				}
 			}
 		}

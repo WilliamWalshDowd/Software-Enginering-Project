@@ -77,7 +77,7 @@ public class Interpriter {
         ArrayList<String> splitEq = new ArrayList<String>();
 
         //remove white spaces from equation
-        eq = eq.replaceAll("\\s+","");
+        //eq = eq.replaceAll("\\s+","");
 
         System.out.println("interpreted as:" + eq);
 
@@ -161,8 +161,9 @@ public class Interpriter {
      */
     public static boolean isValidEquation(String equation)
     {
-    	int numberOfOpenBrackets = 0;
-    	int numberOfCloseBrackets = 0;
+    	int openBracketsCount = 0;
+    	int closeBracketsCount = 0;
+    	int operatorCount = 0;
     	
     	// Accounts for equations such as 
     	//	*1+2+3
@@ -185,7 +186,7 @@ public class Interpriter {
     			{
     				return false;
     			}
-    			numberOfOpenBrackets++;
+    			openBracketsCount++;
     		}
     		else if (equation.charAt(currentChar) == ')')
     		{   
@@ -195,22 +196,53 @@ public class Interpriter {
     			{
     				return false;
     			}
-    			numberOfCloseBrackets++;
+    			closeBracketsCount++;
+    		}
+    		// Accounts for decimal points.
+    		else if (equation.charAt(currentChar) == '.')
+    		{
+    			// Return true if there's a number after the decimal point such as:
+    			//	.1
+    			if (currentChar < equation.length() - 1 && Character.isDigit(equation.charAt(currentChar + 1)))
+    			{
+    				return true;
+    			}
+    			// Return true if there's a number before the decimal point such as:
+    			//	2.
+    			else if (Character.isDigit(equation.charAt(currentChar - 1)))
+    			{
+    				return true;
+    			}
+    			// Otherwie, return false.
+    			return false;
     		}
     		// Accounts for equations that contain non-operator and non-digit characters.
     		else if (!isOperator(equation.charAt(currentChar)) && !Character.isDigit(equation.charAt(currentChar)))
     		{
     			return false;
     		}
+    		else if (isOperator(equation.charAt(currentChar)))
+    		{
+    			operatorCount++;
+    		}
+    		
     	}
     	
     	// Accounts for unpaired brackets such as:
     	//	1+(2+3
     	//	1+2+3)
-    	if (numberOfOpenBrackets != numberOfCloseBrackets)
+    	if (openBracketsCount != closeBracketsCount)
 		{
 			return false;
 		}
+    	
+    	// Accounts for sole numbers such as:
+    	//	1
+    	if (operatorCount == 0)
+    	{
+    		System.out.println("Please enter an equation with operators.");
+    		return false;
+    	}
     	 
     	return true;
     }

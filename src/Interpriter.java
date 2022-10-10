@@ -31,9 +31,14 @@ public class Interpriter {
 			userInput = userInput.replace(")" + number, ")*" + number);
 		}
 		
+		if (!isValidEquation(userInput))
+		{
+			System.out.println("Please input a valid equation.");
+			return null;
+		}
     	
         double answer = 0;
-        String[] splitEquation = splitEquation(userInput	);
+        String[] splitEquation = splitEquation(userInput);
         Stack<Double> nums = new Stack<Double>();
         Stack<String> ops = new Stack<String>(); 
         
@@ -197,19 +202,7 @@ public class Interpriter {
     public static boolean isValidEquation(String equation)
     {
     	String userInput = equation;
-    	userInput = userInput.replaceAll("\\s+","");
-		userInput = userInput.replace("+-","-");
-		userInput = userInput.replace("-+", "-");
-		userInput = userInput.replace("--", "+");
-		//Replaces instances of numbers beside brackets with the two number separated with a multiplication operator(*) such as:
-		// 5(5) -> 5*(5)
-		// (5)5 -> (5) * 5
-		for (int number = 0; number <= 9; number++)
-		{
-			userInput = userInput.replace(number + "(", number + "*(");
-			userInput = userInput.replace(")" + number, ")*" + number);
-		}
-		
+    	
     	int openBracketsCount = 0;
     	int closeBracketsCount = 0;
     	int operatorCount = 0;

@@ -20,18 +20,18 @@ public class CalculatorTests {
         // complex addition test
         String test3Input = "5+5 +    2.5556 +   7+ .1101 +  44444444.4";
         Double test3Output = 44444464.0657;
-        assertEquals("Test with complex additon '5+5 +    2.5556 +   7+ .1101 +  44444444.4' ", test3Output, Interpriter.calculate(test3Input));
+        assertEquals("Test with complex additon '5+5 +    2.5556 +   7+ .1101 +  44444444.4' ", String.format("%.12f",test3Output), String.format("%.12f",Interpriter.calculate(test3Input));
 
 
         // basic subtraction test
         String test4Input = "5-5";
         Double test4Output = 0.0;
-        assertEquals("Test with basic subtraction '5-5' ", test4Output, Interpriter.calculate(test4Input));
+        assertEquals("Test with basic subtraction '5-5' ", String.format("%.12f",test4Output), Interpriter.calculate(test4Input));
 
         // complex subtraction test
         String test5Input = "5-5 -    2.5556 -   7- .1101 -  4444.4";
         Double test5Output = -4454.0657;
-        assertEquals("Test with complex subtraction '5-5 -    2.5556 -   7- .1101 -  44444444.4' ", test5Output, Interpriter.calculate(test5Input));
+        assertEquals("Test with complex subtraction '5-5 -    2.5556 -   7- .1101 -  44444444.4' ", String.format("%.12f",test5Output), Interpriter.calculate(test5Input));
 
 
         // basic multiplication test
@@ -42,7 +42,7 @@ public class CalculatorTests {
         // complex multiplication test
         String test7Input = "5*5 *    2.5556 *   0.7* .1101 *  44444444.4";
         Double test7Output = 218844546.448;
-        assertEquals("Test with complex multiplication '5*5 *    2.5556 *   0.7* .1101 *  44444444.4' ", test7Output, Interpriter.calculate(test7Input));
+        assertEquals("Test with complex multiplication '5*5 *    2.5556 *   0.7* .1101 *  44444444.4' ", String.format("%.12f",test7Output), String.format("%.12f",Interpriter.calculate(test7Input)));
 
 
         // basic division test
@@ -53,7 +53,7 @@ public class CalculatorTests {
         // complex division test
         String test9Input = "44444444.4 /    2.5556 /   0.7/ .1101 /  5";
         Double test9Output = 45130405.8083;
-        assertEquals("Test with complex division '44444444.4 /    2.5556 /   0.7/ .1101 /  5' ", test9Output, Interpriter.calculate(test9Input));
+        assertEquals("Test with complex division '44444444.4 /    2.5556 /   0.7/ .1101 /  5' ", String.format("%.12f",test9Output), String.format("%.12f",Interpriter.calculate(test9Input)));
 
 
         // basic exponent test
@@ -64,18 +64,18 @@ public class CalculatorTests {
         // complex exponent test
         String test11Input = "44 ^    2.5556 ^ 0.232";
         Double test11Output = 110.440377999;
-        assertEquals("Test with complex exponent '44 ^    2.5556 ^ 0.232' ", test11Output, Interpriter.calculate(test11Input));
+        assertEquals("Test with complex exponent '44 ^    2.5556 ^ 0.232' ", String.format("%.12f",test11Output), String.format("%.12f",Interpriter.calculate(test11Input)));
 
 
         // basic bracket test
         String test12Input = "(5+5) + (4+4)";
         Double test12Output = 2.0;
-        assertEquals("Test with basic bracket '(5+5) + (4+4)' ", test10Output, Interpriter.calculate(test10Input));
+        assertEquals("Test with basic bracket '(5+5) + (4+4)' ", test12Output, Interpriter.calculate(test12Input));
 
         // complex bracket test
         String test13Input = "(44 ^    2.5556) ^ 0.232";
         Double test13Output = 9.42761366285;
-        assertEquals("Test with complex bracket '(44 ^    2.5556) ^ 0.232' ", test11Output, Interpriter.calculate(test11Input));
+        assertEquals("Test with complex bracket '(44 ^    2.5556) ^ 0.232' ", String.format("%.12f",test13Output), String.format("%.12f",Interpriter.calculate(test13Input)));
     }
 }
 

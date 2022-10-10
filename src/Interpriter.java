@@ -1,9 +1,12 @@
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 
 public class Interpriter {   
 
     public Interpriter() {
     }
+    
+    private static DecimalFormat formatDecimal = new DecimalFormat("0.00");
 
     /**
      * Calculates a given equation.
@@ -11,10 +14,31 @@ public class Interpriter {
      * @param equation String representing an equation.
      * @return result calculated from the equation.
      */
-    public static Double calculate(String equation) {
+    public static String calculate(String equation) {
+    	
+    	String userInput = equation;
+    	
+    	userInput = userInput.replaceAll("\\s+","");
+		userInput = userInput.replace("+-","-");
+		userInput = userInput.replace("-+", "-");
+		userInput = userInput.replace("--", "+");
+		//Replaces instances of numbers beside brackets with the two number separated with a multiplication operator(*) such as:
+		// 5(5) -> 5*(5)
+		// (5)5 -> (5) * 5
+		for (int number = 0; number <= 9; number++)
+		{
+			userInput = userInput.replace(number + "(", number + "*(");
+			userInput = userInput.replace(")" + number, ")*" + number);
+		}
+		
+		if (!isValidEquation(userInput))
+		{
+			System.out.println("Please input a valid equation.");
+			return null;
+		}
     	
         double answer = 0;
-        String[] splitEquation = splitEquation(equation);
+        String[] splitEquation = splitEquation(userInput);
         Stack<Double> nums = new Stack<Double>();
         Stack<String> ops = new Stack<String>(); 
         
@@ -53,7 +77,6 @@ public class Interpriter {
         while (!ops.isEmpty() && isOperator(ops.safePop())) {
             String calculate = ops.pop();
             doACalculation(calculate, ops, nums);
-            System.out.println(calculate);
         }
 
         // returning result left in value stack
@@ -64,7 +87,7 @@ public class Interpriter {
             System.out.println("Error: invalid input format (values where left in stacks with no use)");
         }
 
-        return answer;
+        return formatDecimal.format(answer);
     }
 
     /**
@@ -178,74 +201,76 @@ public class Interpriter {
      */
     public static boolean isValidEquation(String equation)
     {
+    	String userInput = equation;
+    	
     	int openBracketsCount = 0;
     	int closeBracketsCount = 0;
     	int operatorCount = 0;
     	
-    	// Accounts for equations such as 
+    	// Accounts for userInputs such as 
     	//	*1+2+3
     	//	1+2+3*
     	//	)1+2+3
     	//	1+2+3(
-    	if ((equation.charAt(0) != '-' && isOperator(equation.charAt(0))) || isOperator(equation.charAt(equation.length() - 1))
-    			|| equation.charAt(0) == ')' || equation.charAt(equation.length() - 1) == '(')
+    	if ((userInput.charAt(0) != '-' && isOperator(userInput.charAt(0))) || isOperator(userInput.charAt(userInput.length() - 1))
+    			|| userInput.charAt(0) == ')' || userInput.charAt(userInput.length() - 1) == '(')
 		{
 			return false;
 		}
     	
-    	for (int currentChar = 0; currentChar < equation.length(); currentChar++)
+    	for (int currentChar = 0; currentChar < userInput.length(); currentChar++)
     	{
-    		if (equation.charAt(currentChar) == '(')
+    		if (userInput.charAt(currentChar) == '(')
     		{
-    			// Accounts for equations where an operator is after an open bracket such as:
+    			// Accounts for userInputs where an operator is after an open bracket such as:
     			//	1+(*2+3)
-    			if (isOperator(equation.charAt(currentChar + 1)))
+    			if (isOperator(userInput.charAt(currentChar + 1)))
     			{
     				return false;
     			}
     			openBracketsCount++;
     		}
-    		else if (equation.charAt(currentChar) == ')')
+    		else if (userInput.charAt(currentChar) == ')')
     		{   
-    			// Accounts for equations where a close brackets is after an operator such as:
+    			// Accounts for userInputs where a close brackets is after an operator such as:
     			//	1+(2+3*)
-    			if (isOperator(equation.charAt(currentChar - 1)))
+    			if (isOperator(userInput.charAt(currentChar - 1)))
     			{
     				return false;
     			}
     			closeBracketsCount++;
     		}
     		// Accounts for decimal points.
-    		else if (equation.charAt(currentChar) == '.')
+    		else if (userInput.charAt(currentChar) == '.')
     		{
     			// Return true if there's a number after the decimal point such as:
     			//	.1
-    			if (currentChar < equation.length() - 1 && Character.isDigit(equation.charAt(currentChar + 1)))
+    			if (currentChar < userInput.length() - 1 && Character.isDigit(userInput.charAt(currentChar + 1)))
     			{
     				return true;
     			}
     			// Return true if there's a number before the decimal point such as:
     			//	2.
-    			else if (Character.isDigit(equation.charAt(currentChar - 1)))
+    			else if (Character.isDigit(userInput.charAt(currentChar - 1)))
     			{
     				return true;
     			}
     			// Otherwie, return false.
     			return false;
     		}
-    		// Accounts for equations that contain non-operator and non-digit characters.
-    		else if (!isOperator(equation.charAt(currentChar)) && !Character.isDigit(equation.charAt(currentChar)))
+    		// Accounts for userInputs that contain non-operator and non-digit characters.
+    		else if (!isOperator(userInput.charAt(currentChar)) && !Character.isDigit(userInput.charAt(currentChar)))
     		{
     			return false;
     		}
-    		// Account for equations with two operators in a row.
-    		else if (currentChar < equation.length() - 1 && isOperator(equation.charAt(currentChar)) 
-    				&& equation.charAt(currentChar) == equation.charAt(currentChar + 1))
+    		// Account for userInputs with two operators in a row.
+    		else if (currentChar < userInput.length() - 1 && isOperator(userInput.charAt(currentChar)) 
+    				&& userInput.charAt(currentChar) == userInput.charAt(currentChar + 1))
     		{
     			System.out.println("There are duplicate operators that cannot be resolved.");
     			return false;
     		}
-    		else if (isOperator(equation.charAt(currentChar)) && currentChar != 0)
+    		else if (isOperator(userInput.charAt(currentChar)) && currentChar != 0)
     		{
     			operatorCount++;
     		}

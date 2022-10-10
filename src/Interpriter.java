@@ -293,9 +293,9 @@ public class Interpriter {
     /**
      * Resolves a calculator given an operator and the numbers involved.
      * 
-     * @param operator
-     * @param ops
-     * @param nums
+     * @param operator String current operator
+     * @param ops Stack<String> of operators
+     * @param nums Stack<Double> of numbers to be used in calculations.
      */
     private static void doACalculation(String operator, Stack<String> ops, Stack<Double> nums) {
         double val1, val2;

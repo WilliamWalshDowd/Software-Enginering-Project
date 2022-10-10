@@ -53,7 +53,6 @@ public class Interpriter {
         while (!ops.isEmpty() && isOperator(ops.safePop())) {
             String calculate = ops.pop();
             doACalculation(calculate, ops, nums);
-            System.out.println(calculate);
         }
 
         // returning result left in value stack

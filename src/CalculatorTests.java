@@ -29,8 +29,8 @@ public class CalculatorTests {
         assertEquals("Test with basic subtraction '5-5' ", test4Output, Interpriter.calculate(test4Input));
 
         // complex subtraction test
-        String test5Input = "5-5 -    2.5556 -   7- .1101 -  44444444.4";
-        Double test5Output = -44444454.0657;
+        String test5Input = "5-5 -    2.5556 -   7- .1101 -  4444.4";
+        Double test5Output = -4454.0657;
         assertEquals("Test with complex subtraction '5-5 -    2.5556 -   7- .1101 -  44444444.4' ", test5Output, Interpriter.calculate(test5Input));
 
 

@@ -1,9 +1,5 @@
 import static org.junit.Assert.assertEquals;
 
-import java.beans.Transient;
-import java.io.IOException;
-import java.util.Arrays;
-
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
@@ -68,7 +64,18 @@ public class CalculatorTests {
         // complex exponent test
         String test11Input = "44 ^    2.5556 ^ 0.232";
         Double test11Output = 110.440377999;
-        assertEquals("Test with complex exponent '44 ^    2.5556 ^ 0.232' ", test10Output, Interpriter.calculate(test10Input));
+        assertEquals("Test with complex exponent '44 ^    2.5556 ^ 0.232' ", test11Output, Interpriter.calculate(test11Input));
+
+
+        // basic bracket test
+        String test12Input = "(5+5) + (4+4)";
+        Double test12Output = 2.0;
+        assertEquals("Test with basic bracket '(5+5) + (4+4)' ", test10Output, Interpriter.calculate(test10Input));
+
+        // complex bracket test
+        String test13Input = "(44 ^    2.5556) ^ 0.232";
+        Double test13Output = 9.42761366285;
+        assertEquals("Test with complex bracket '(44 ^    2.5556) ^ 0.232' ", test11Output, Interpriter.calculate(test11Input));
     }
 }
 

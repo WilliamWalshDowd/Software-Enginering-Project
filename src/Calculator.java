@@ -64,6 +64,15 @@ public class Calculator
 					userInput = userInput.replace("+-","-");
 					userInput = userInput.replace("-+", "-");
 					userInput = userInput.replace("--", "+");
+					//Replaces instances of numbers beside brackets with the two number separated with a multiplication operator(*) such as:
+					// 5(5) -> 5*(5)
+					// (5)5 -> (5) * 5
+					for (int number = 0; number <= 9; number++)
+					{
+						userInput = userInput.replace(number + "(", number + "*(");
+						userInput = userInput.replace(")" + number, ")*" + number);
+					}
+					
 					//userInput = userInput.replace("-(", "-1*(");
 				}
 			}

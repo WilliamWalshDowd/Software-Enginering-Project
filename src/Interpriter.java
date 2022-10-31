@@ -31,7 +31,7 @@ public class Interpriter {
                     }
                     ops.push(currentString);
                 }
-            } else if (!currentString.equals("(") && !currentString.equals(")")) { // is a value so add to stack 
+            } else if (!currentString.equals("(") && !currentString.equals(")")) { // is a value so add to stack
                 double value = Double.parseDouble(currentString);
                 nums.push(value);
             } else if (currentString.equals("(")) { // if its a bracket then add to stack so it can be calculate below
@@ -149,7 +149,7 @@ public class Interpriter {
      * @return True if x is an operator. False, otherwise.
      */
     private static boolean isOperator(String x) {
-        if (x.equals("+") || x.equals("-") || x.equals("*") || x.equals("/") || x.equals("^")) {
+        if (x.equals("+") || x.equals("-") || x.equals("*") || x.equals("/") || x.equals("^") || x.equals("exp") || x.equals("log")) {
             return true;
         } else {
             return false;
@@ -162,13 +162,13 @@ public class Interpriter {
      * @param x character to be checked if an operator.
      * @return True if x is an operator. False, otherwise.
      */
-    private static boolean isOperator(char x) {
-        if (x == '+' || x == '-' || x == '*' || x == '/' || x == '^') {
-            return true;
-        } else {
-            return false;
-        }
-    }
+    // private static boolean isOperator(char x) {
+    //     if (x == '+' || x == '-' || x == '*' || x == '/' || x == '^') {
+    //         return true;
+    //     } else {
+    //         return false;
+    //     }
+    // }
     
     /**
      * Takes an equation and determines if it's a valid equation.
@@ -284,7 +284,7 @@ public class Interpriter {
             return 1;
         } else if (x.equals("*") || x.equals("/")) {
             return 2;
-        } else if (x.equals("^")) {
+        } else if (x.equals("^") || x.equals("exp") || x.equals("log")) {
             return 3;
         }
         return 0;
@@ -307,10 +307,10 @@ public class Interpriter {
             val2 = nums.pop();
         }
 
-        if (nums.isEmpty()) {
+        if (nums.isEmpty() && !operator.equals("exp") && !operator.equals("log")) {
             System.out.println("Error in input");
             return;
-        } else {
+        } else if (!operator.equals("exp") && !operator.equals("log")) {
             val1 = nums.pop();
         }
 
@@ -326,6 +326,10 @@ public class Interpriter {
             output = val1 / val2;
         } else if (operator.equals("^")) {
             output = Math.pow(val1, val2);
+        } else if (operator.equals("exp")) {
+            output = Math.exp(val2);
+        } else if (operator.equals("log")) {
+            output = Math.log(val2);
         }
 
         //System.out.println("Val1: " + val1 + ", Val2: " + val2 + ", Output: " + output);
